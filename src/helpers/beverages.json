@@ -1,0 +1,106 @@
+[
+    {
+      "name": "Coca-Cola",
+      "description": "Refresco de cola.",
+      "price": 1200,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Pepsi",
+      "description": "Refresco de cola alternativo.",
+      "price": 1300,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Sprite",
+      "description": "Refresco de lima-limón.",
+      "price": 1400,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Fanta",
+      "description": "Refresco de naranja.",
+      "price": 1500,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Agua Mineral",
+      "description": "Agua mineral natural.",
+      "price": 1600,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Té Helado",
+      "description": "Té helado con limón.",
+      "price": 1700,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Limonada",
+      "description": "Limonada casera.",
+      "price": 1800,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Jugo de Naranja",
+      "description": "Jugo natural de naranja.",
+      "price": 1900,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Cerveza",
+      "description": "Cerveza fría.",
+      "price": 2000,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Jugo de Manzana",
+      "description": "Jugo natural de manzana.",
+      "price": 1700,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Café",
+      "description": "Café recién preparado.",
+      "price": 1500,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Té",
+      "description": "Té caliente de elección.",
+      "price": 1300,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Jugo de Uva",
+      "description": "Jugo natural de uva.",
+      "price": 1900,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Jugo de Piña",
+      "description": "Jugo natural de piña.",
+      "price": 1600,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+    {
+      "name": "Agua con Gas",
+      "description": "Agua con gas refrescante.",
+      "price": 1800,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+     {
+      "name": "Jugo de Frutas Tropicales",
+      "description": "Mezcla de jugo de frutas tropicales.",
+      "price": 1400,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    },
+  
+    {
+      "name": "Té de Hierbas",
+      "description": "Selección de tés de hierbas.",
+      "price": 1500,
+      "image": "https://www.bhg.com.au/media/19651/soda-240818.jpg?width=720&center=0.0,0.0"
+    }
+  ]
+  

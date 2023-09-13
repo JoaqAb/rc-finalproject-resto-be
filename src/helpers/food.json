@@ -1,0 +1,302 @@
+[
+  {
+    "name": "Empanada de Carne",
+    "description": "Rellena de carne picada, cebolla y huevo duro.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Empanada de Pollo",
+    "description": "Rellena de pollo desmenuzado y cebolla.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Empanada de Jamón y Queso",
+    "description": "Rellena de jamón y queso derretido.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Empanada de Champiñones",
+    "description": "Rellena de champiñones salteados con ajo y perejil.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Empanada de Espinacas",
+    "description": "Rellena de espinacas cocidas con cebolla y queso.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Empanada de Choclo",
+    "description": "Rellena de granos tiernos de choclo y queso.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Empanada de Atún",
+    "description": "Rellena de atún en lata, cebolla y huevo duro.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Empanada de Queso y Cebolla",
+    "description": "Rellena de queso cremoso y cebolla caramelizada.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Empanada de Carne y Queso",
+    "description": "Rellena de carne picada y queso derretido.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Empanada de Pollo y Champiñones",
+    "description": "Rellena de pollo desmenuzado y champiñones salteados con ajo y perejil.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Empanada de Chorizo",
+    "description": "Rellena de chorizo picante y pimientos asados.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Empanada de Calabaza",
+    "description": "Rellena de puré de calabaza y queso mozzarella.",
+    "price": 300,
+    "image": "https://www.pasqualinonet.com.ar/images/Empanada-tucuman-MCCw.jpg"
+  },
+  {
+    "name": "Hamburguesa Clásica",
+    "description": "Hamburguesa de carne con lechuga, tomate y mayonesa.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Pollo",
+    "description": "Hamburguesa de pollo con lechuga, tomate y salsa especial.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Ternera",
+    "description": "Hamburguesa de ternera con cebolla caramelizada y queso cheddar.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa BBQ",
+    "description": "Hamburguesa de carne con salsa barbacoa, cebolla crujiente y bacon.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa Vegetariana",
+    "description": "Hamburguesa vegetariana de garbanzos con lechuga, tomate y salsa de aguacate.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa Doble",
+    "description": "Doble hamburguesa de carne con doble queso, lechuga y cebolla.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Pavo",
+    "description": "Hamburguesa de pavo con lechuga, tomate y mostaza dijon.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Champiñones",
+    "description": "Hamburguesa de carne con champiñones salteados y queso suizo.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa Mexicana",
+    "description": "Hamburguesa de carne con guacamole, jalapeños y queso cheddar.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Salmón",
+    "description": "Hamburguesa de salmón con mayonesa de eneldo y lechuga fresca.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Cordero",
+    "description": "Hamburguesa de cordero con tzatziki, tomate y cebolla morada.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa Hawaiana",
+    "description": "Hamburguesa de carne con piña a la parrilla, bacon y salsa teriyaki.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Pescado",
+    "description": "Hamburguesa de pescado fresco con coleslaw y salsa tártara.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Tofu",
+    "description": "Hamburguesa de tofu con espinacas y alioli de ajo negro.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Portobello",
+    "description": "Hamburguesa de carne con champiñones portobello a la parrilla y queso azul.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Cerdo",
+    "description": "Hamburguesa de cerdo marinada con cebolla agridulce y cilantro fresco.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Pollo Picante",
+    "description": "Hamburguesa de pollo con jalapeños, cebolla morada y mayonesa picante.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Tres Quesos",
+    "description": "Hamburguesa de carne con queso cheddar, suizo y azul, y cebolla caramelizada.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Hamburguesa de Camarones",
+    "description": "Hamburguesa de camarones frescos con salsa de mango y aguacate.",
+    "price": 2300,
+    "image": "https://www.revistadeck.com/wp-content/uploads/hamburguesa.jpg"
+  },
+  {
+    "name": "Papas Fritas Clásicas",
+    "description": "Papas fritas crujientes y doradas, perfectamente sazonadas.",
+    "price": 800,
+    "image": "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ-500x375.jpg"
+  },
+  {
+    "name": "Papas Fritas con Queso",
+    "description": "Papas fritas cubiertas con queso fundido y cebolla caramelizada.",
+    "price": 850,
+    "image": "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ-500x375.jpg"
+  },
+  {
+    "name": "Papas Fritas con Chili",
+    "description": "Papas fritas acompañadas de chili con carne y jalapeños.",
+    "price": 900,
+    "image": "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ-500x375.jpg"
+  },
+  {
+    "name": "Papas Fritas Trufadas",
+    "description": "Papas fritas con aceite de trufa y queso parmesano rallado.",
+    "price": 950,
+    "image": "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ-500x375.jpg"
+  },
+  {
+    "name": "Papas Fritas con Bacon",
+    "description": "Papas fritas cubiertas de bacon crujiente y queso cheddar.",
+    "price": 1000,
+    "image": "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ-500x375.jpg"
+  },
+  {
+    "name": "Papas Fritas con Guacamole",
+    "description": "Papas fritas servidas con guacamole fresco y salsa de cilantro.",
+    "price": 1050,
+    "image": "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ-500x375.jpg"
+  },
+  {
+    "name": "Papas Fritas Cajún",
+    "description": "Papas fritas sazonadas con especias cajún y salsa picante.",
+    "price": 1100,
+    "image": "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ-500x375.jpg"
+  },
+  {
+    "name": "Papas Fritas con Huevo",
+    "description": "Papas fritas con huevo frito encima y salsa de ajo.",
+    "price": 1150,
+    "image": "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ-500x375.jpg"
+  },
+  {
+    "name": "Papas Fritas con Salsa de Queso",
+    "description": "Papas fritas acompañadas de una deliciosa salsa de queso suizo.",
+    "price": 1200,
+    "image": "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ-500x375.jpg"
+  },
+  {
+    "name": "Pizza Margarita",
+    "description": "Pizza con salsa de tomate, mozzarella y albahaca fresca.",
+    "price": 2700,
+    "image": "https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI="
+  },
+  {
+    "name": "Pizza Pepperoni",
+    "description": "Pizza con salsa de tomate, mozzarella y rodajas de pepperoni.",
+    "price": 2800,
+    "image": "https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI="
+  },
+  {
+    "name": "Pizza Hawaiana",
+    "description": "Pizza con salsa de tomate, mozzarella, jamón y piña.",
+    "price": 2900,
+    "image": "https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI="
+  },
+  {
+    "name": "Pizza de Pollo BBQ",
+    "description": "Pizza con salsa BBQ, pollo a la parrilla, cebolla y mozzarella.",
+    "price": 3000,
+    "image": "https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI="
+  },
+  {
+    "name": "Pizza Vegetariana",
+    "description": "Pizza con salsa de tomate, mozzarella y una variedad de verduras frescas.",
+    "price": 3100,
+    "image": "https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI="
+  },
+  {
+    "name": "Pizza de Champiñones",
+    "description": "Pizza con salsa de tomate, mozzarella y champiñones frescos.",
+    "price": 3200,
+    "image": "https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI="
+  },
+  {
+    "name": "Pizza de Salchicha",
+    "description": "Pizza con salsa de tomate, mozzarella y salchichas italianas.",
+    "price": 3300,
+    "image": "https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI="
+  },
+  {
+    "name": "Pizza de Pimiento",
+    "description": "Pizza con salsa de tomate, mozzarella y pimientos asados.",
+    "price": 3400,
+    "image": "https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI="
+  },
+  {
+    "name": "Pizza de Carne",
+    "description": "Pizza con salsa de tomate, mozzarella y carne molida.",
+    "price": 3500,
+    "image": "https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI="
+  },
+  {
+    "name": "Pizza de Calabresa",
+    "description": "Pizza con salsa de tomate, mozzarella y salchichas calabresas.",
+    "price": 4000,
+    "image": "https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI="
+  }
+]
