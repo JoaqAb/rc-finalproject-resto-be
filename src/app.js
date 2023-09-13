@@ -1,8 +1,15 @@
-import express from 'express';
+import cors from 'cors'
+import dotenv from 'dotenv'
+import express from 'express'
+import mongoose from 'mongoose'
+import bodyParser from 'body-parser'
 
-const EXPRESS_PORT = 5000
+dotenv.config()
+
+const EXPRESS_PORT = process.env.EXPRESS_PORT || 3000
 
 const app = express();
+
 
 console.log("Starting")
 
