@@ -61,6 +61,42 @@ export const usersRoutes = (req, res) => {
     }
   );
 
-  const loginUser = async (req, res) => {};
-  const getUser = async (req, res) => {};
+  // Ruta de login
+  router.post(
+    "/login",
+    checkRequired(["email", "password"]),
+    validateLoginFields,
+    checkReadyLogin,
+    async (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ status: "ERR", data: errors.array() });
+      }
+
+      try {
+        const { password } = req.body;
+        const user = res.locals.foundUser;
+        const passwordIsValid = await userModel.comparePassword(
+          password,
+          user.password
+        );
+
+        if (!passwordIsValid) {
+          return res
+            .status(401)
+            .json({ status: "ERR", data: "Credenciales inválidas" });
+        }
+
+        const token = generateToken({ userId: user._id });
+
+        res.status(200).json({ status: "OK", data: { token } });
+      } catch (error) {
+        res
+          .status(500)
+          .json({ status: "ERR", data: "Error al iniciar sesión" });
+      }
+    }
+  );
+
+  return router;
 };
