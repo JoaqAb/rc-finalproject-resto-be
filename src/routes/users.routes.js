@@ -1,36 +1,23 @@
 import mongoose from "mongoose";
 import { Router } from "express";
-import { body, validationResult } from "express-validator";
-import jwt from "jsonwebtoken";
+import { validationResult } from "express-validator";
+import userModel from "../models/users.model.js";
+import bcrypt from 'bcrypt';
+import { checkRequired, generateToken, hashPassword } from "../utils/utils.js";
+import {
+  checkReadyLogin,
+  checkRegistered,
+  validateCreateFields,
+  validateLoginFields,
+} from "../utils/middlewares.js";
 
-import userModel from "../models/user.model";
-
-export const usersRoutes = (req, res) => {
+const usersRoutes = (req, res) => {
   const router = Router();
 
-  const checkRegistered = async (req, res, next) => {
-    const existingUser = await userModel.findOne({ email: req.body.email });
-
-    if (!existingUser) {
-      next();
-    } else {
-      res
-        .status(400)
-        .json({
-          status: "ERR",
-          data: "El correo electrónico ya está registrado",
-        });
-    }
-  };
-
-  // Ruta registro
+  // Ruta de registro
   router.post(
     "/register",
-    [
-      body("name", "El nombre es requerido").not().isEmpty(),
-      body("email", "El correo electrónico es requerido").isEmail(),
-      body("password", "La contraseña debe tener al menos 6 caracteres").isLength({ min: 6 }),
-    ],
+    validateCreateFields,
     checkRegistered,
     async (req, res) => {
       const errors = validationResult(req);
@@ -39,20 +26,25 @@ export const usersRoutes = (req, res) => {
       }
 
       try {
+        // Hashear la contraseña antes de guardarla
+        const hashedPassword = await hashPassword(req.body.password);
+
         // Crear nuevo user en DB
-        const newUser = await userModel.create(req.body);
+        const newUser = await userModel.create({
+          name: req.body.name,
+          email: req.body.email,
+          password: hashedPassword,
+        });
+
+        // Asignar el rol "client" al nuevo usuario
+        newUser.rol = "client";
+        await newUser.save();
 
         // Generar un token de autenticación
-        const token = jwt.sign(
-          { userId: newUser._id },
-          process.env.JWT_SECRET,
-          {
-            expiresIn: process.env.JWT_EXPIRATION,
-          }
-        );
+        const token = generateToken({ userId: newUser._id });
 
         // Enviar el token en la respuesta
-      res.status(201).json({ status: "OK", data: { token } });
+        res.status(201).json({ status: "OK", data: { token } });
       } catch (error) {
         res
           .status(500)
@@ -64,7 +56,7 @@ export const usersRoutes = (req, res) => {
   // Ruta de login
   router.post(
     "/login",
-    checkRequired(["email", "password"]),
+    checkRequired(['email', 'password']),
     validateLoginFields,
     checkReadyLogin,
     async (req, res) => {
@@ -76,27 +68,23 @@ export const usersRoutes = (req, res) => {
       try {
         const { password } = req.body;
         const user = res.locals.foundUser;
-        const passwordIsValid = await userModel.comparePassword(
-          password,
-          user.password
-        );
+
+        const passwordIsValid = await bcrypt.compare(password, user.password);
 
         if (!passwordIsValid) {
-          return res
-            .status(401)
-            .json({ status: "ERR", data: "Credenciales inválidas" });
+          return res.status(401).json({ status: "ERR", data: "Credenciales inválidas" });
         }
 
         const token = generateToken({ userId: user._id });
 
         res.status(200).json({ status: "OK", data: { token } });
       } catch (error) {
-        res
-          .status(500)
-          .json({ status: "ERR", data: "Error al iniciar sesión" });
+         res.status(500).json({ status: "ERR", data: "Error al iniciar sesión" });
       }
     }
   );
 
   return router;
 };
+
+export default usersRoutes;

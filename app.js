@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
+import usersRoutes from './src/routes/users.routes.js'
+
 // Cargar variables de entorno
 dotenv.config();
 
@@ -22,12 +24,12 @@ app.use(cors({
 }));
 app.use(express.urlencoded({ extended: true }));
 
-// Importar rutas
+// Rutas
 app.use('/api/users', usersRoutes());
-app.use('/api/products', productsRoutes());
-app.use('/api/orders', ordersRoutes());
-app.use('/api/admin', adminRoutes());
-app.use('/api/stats', statsRoutes());
+// app.use('/api/products', productsRoutes());
+// app.use('/api/orders', ordersRoutes());
+// app.use('/api/admin', adminRoutes());
+// app.use('/api/stats', statsRoutes());
 
 // Manejo de errores
 app.all('*', (req, res) => {
