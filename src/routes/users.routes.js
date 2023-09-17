@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {
   checkRequired,
+  filterAllowed,
   filterData,
   generateToken,
   hashPassword,
@@ -22,44 +23,60 @@ import {
 const usersRoutes = (req, res) => {
   const router = Router();
 
-  // Ruta de registro
-  router.post(
-    "/register",
-    validateCreateFields,
-    checkRegistered,
-    async (req, res) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ status: "ERR", data: errors.array() });
-      }
+// Ruta de registro
+router.post(
+  "/register",
+  validateCreateFields,
+  checkRegistered,
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ status: "ERR", data: errors.array() });
+    }
 
-      try {
-        // Hashear la contraseña antes de guardarla
-        const hashedPassword = await hashPassword(req.body.password);
+    try {
+      // Hashear la contraseña antes de guardarla
+      const hashedPassword = await hashPassword(req.body.password);
 
-        // Crear nuevo user en DB
+      // Verifica si ya existe un administrador en la base de datos
+      const adminCount = await userModel.countDocuments({ rol: "admin" });
+
+      // Si no existe ningún administrador, permite el registro como administrador
+      if (adminCount === 0) {
+        // Crear nuevo usuario en DB con el rol de administrador
         const newUser = await userModel.create({
           name: req.body.name,
           email: req.body.email,
           password: hashedPassword,
+          rol: "admin",
         });
-
-        // Asignar el rol "client" al nuevo usuario
-        newUser.rol = "client";
-        await newUser.save();
 
         // Generar un token de autenticación
         const token = generateToken({ userId: newUser._id });
 
         // Enviar el token en la respuesta
         res.status(201).json({ status: "OK", data: { token } });
-      } catch (error) {
-        res
-          .status(500)
-          .json({ status: "ERR", data: "Error al registrar el usuario" });
+      } else {
+        // Si ya existe un administrador, permite el registro como usuario regular
+        const newUser = await userModel.create({
+          name: req.body.name,
+          email: req.body.email,
+          password: hashedPassword,
+          role: "client",
+        });
+
+        // Generar un token de autenticación
+        const token = generateToken({ userId: newUser._id });
+
+        // Enviar el token en la respuesta
+        res.status(201).json({ status: "OK", data: { token } });
       }
+    } catch (error) {
+      console.error("Error al registrar el usuario:", error);
+      res.status(500).json({ status: "ERR", data: "Error al registrar el usuario" });
     }
-  );
+  }
+);
 
   // Ruta de login
   router.post(
@@ -89,23 +106,19 @@ const usersRoutes = (req, res) => {
               process.env.JWT_SECRET,
               { expiresIn: process.env.JWT_EXPIRATION }
             );
-            console.log("Token generado con éxito"); // Agrega un log para verificar que el token se generó correctamente
             res.status(200).send({
               status: "OK",
               data: filterData(foundUser._doc, ["password"]),
             });
           } else {
-            console.log("Credenciales no válidas"); // Agrega un log para verificar que las credenciales no son válidas
             res
               .status(401)
               .send({ status: "ERR", data: "Credenciales no válidas" });
           }
         } catch (err) {
-          console.error("Error al iniciar sesión:", err); // Agrega un log para verificar errores
           res.status(500).send({ status: "ERR", data: err.message });
         }
       } else {
-        console.log("Errores de validación:", validationResult(req).array()); // Agrega un log para verificar errores de validación
         res
           .status(400)
           .send({ status: "ERR", data: validationResult(req).array() });
@@ -116,8 +129,6 @@ const usersRoutes = (req, res) => {
   // Ruta profile para ver datos del cliente
   router.get("/profile", verifyToken, async (req, res) => {
     try {
-      console.log("Datos del usuario autenticado:", req.loggedInUser);
-
       // Verificar si req.loggedInUser contiene el ID del usuario
       if (!req.loggedInUser._id) {
         return res
@@ -139,16 +150,66 @@ const usersRoutes = (req, res) => {
         email: user.email,
       };
 
-      console.log("Datos del usuario obtenidos:", userData);
-
       res.status(200).json({ status: "OK", data: userData });
     } catch (error) {
-      console.error("Error al obtener datos del usuario:", error);
       res
         .status(500)
         .json({ status: "ERR", data: "Error al obtener datos del usuario" });
     }
   });
+
+  // Ruta para actualizar datos de cliente
+  router.put(
+    "/update",
+    verifyToken,
+    validateCreateFields,
+    filterAllowed(["name", "email", "password"]),
+    async (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ status: "ERR", data: errors.array() });
+      }
+      try {
+        const user = await userModel.findById(req.loggedInUser._id);
+
+        if (!user) {
+          return res
+            .status(404)
+            .json({ status: "ERR", data: "Usuario no encontrado" });
+        }
+
+        if (req.body.name) {
+          user.name = req.body.name;
+        }
+
+        if (req.body.email) {
+          user.email = req.body.email;
+        }
+
+        if (req.body.newPassword) {
+          const hashedPassword = await hashPassword(req.body.newPassword);
+          user.password = hashedPassword;
+        }
+
+        await user.save();
+
+        const updatedUserData = {
+          name: user.name,
+          email: user.email,
+        };
+
+        res.status(200).json({ status: "OK", data: updatedUserData });
+      } catch (error) {
+        console.error("Error al actualizar datos del usuario:", error);
+
+        res.status(500).json({
+          status: "ERR",
+          data: "Error al actualizar datos del usuario",
+          error: error.message,
+        });
+      }
+    }
+  );
 
   return router;
 };

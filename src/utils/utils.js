@@ -42,3 +42,15 @@ export const filterData = (data, unwantedFields) => {
   unwantedFields.forEach(field => delete filteredData[field] )
   return filteredData
 }
+
+export const filterAllowed = (allowedFields) => {
+  return (req, res, next) => {
+      req.filteredBody = {};
+      
+      for (const key in req.body) {
+          if (allowedFields.includes(key)) req.filteredBody[key] = req.body[key]
+      }
+      
+      next()
+  }
+}
