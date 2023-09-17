@@ -32,3 +32,13 @@ export const checkRequired = (requiredFields) => {
     next();
   };
 };
+
+export const isValidPassword = (userInDb, pass) => {
+  return bcrypt.compareSync(pass, userInDb.password);
+}
+
+export const filterData = (data, unwantedFields) => {
+  const { ...filteredData } = data
+  unwantedFields.forEach(field => delete filteredData[field] )
+  return filteredData
+}

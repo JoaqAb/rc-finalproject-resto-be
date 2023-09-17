@@ -4,22 +4,29 @@ import userModel from "../models/users.model.js";
 
 
 // Verifica token
-export const authenticateToken = (req, res, next) => {
-  const token = req.header('Authorization');
+export const verifyToken = (req, res, next) => {
+  try {
+      const headerToken = req.headers.authorization
 
-  if (!token) {
-    return res.status(401).json({ status: 'ERR', data: 'Token no proporcionado' });
+      if (!headerToken) return res.status(401).send({ status: 'ERR', data: 'Se requiere header con token válido' })
+      const token = headerToken.replace('Bearer ', '')
+
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+          if (err) {
+              if (err.name === 'TokenExpiredError') {
+                  return res.status(401).send({ status: 'ERR', data: 'El token ha expirado' })
+              } else {
+                  return res.status(401).send({ status: 'ERR', data: 'El token no es válido' })
+              }
+          }
+
+          req.loggedInUser = decoded
+          next()
+      })
+  } catch(err) {
+      return res.status(500).send({ status: 'ERR', data: err.message })
   }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ status: 'ERR', data: 'Token inválido' });
-    }
-
-    req.user = user;
-    next();
-  });
-};
+}
 
 // Verifica si el email enviado en el body ya se encuentra registrado
 export const checkRegistered = async (req, res, next) => {
