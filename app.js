@@ -5,6 +5,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import usersRoutes from './src/routes/users.routes.js'
+import productsRoutes from './src/routes/products.routes.js';
+
 
 // Cargar variables de entorno
 dotenv.config();
@@ -26,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Rutas
 app.use('/api/users', usersRoutes());
-// app.use('/api/products', productsRoutes());
+app.use('/api/products', productsRoutes());
 // app.use('/api/orders', ordersRoutes());
 // app.use('/api/admin', adminRoutes());
 // app.use('/api/stats', statsRoutes());
