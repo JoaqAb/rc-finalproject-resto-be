@@ -68,6 +68,23 @@ export const validateCreateFields = [
     .withMessage("La clave debe tener entre 6 y 12 caracteres"),
 ];
 
+// Valida campos al crear un producto
+export const validateProductCreateFields = [
+  body("name")
+    .isLength({ min: 2, max: 32 })
+    .withMessage("El nombre debe tener entre 2 y 32 caracteres"),
+  body("description")
+    .isLength({ min: 2, max: 255 })
+    .withMessage("La descripción debe tener entre 2 y 255 caracteres"),
+  body("price")
+    .isNumeric()
+    .withMessage("El precio debe ser un valor numérico válido"),
+  body("available").isBoolean().withMessage("El campo 'available' debe ser booleano"),
+  body("image")
+    .isURL()
+    .withMessage("El campo 'image' debe ser una URL válida"),
+];
+
 // Valida los elementos del body utilizando express-validator
 export const validateLoginFields = [
   body("email").isEmail().withMessage("El formato de mail no es válido"),

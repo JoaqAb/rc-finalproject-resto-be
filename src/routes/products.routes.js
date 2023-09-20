@@ -3,9 +3,11 @@ import productModel from "../models/product.model.js";
 import {
   checkAdmin,
   filterAllowed,
+  validateProductCreateFields,
   verifyToken,
 } from "../utils/middlewares.js";
 import mongoose from "mongoose";
+import { checkRequired } from "../utils/utils.js";
 
 const productsRoutes = (req, res) => {
   const router = Router();
@@ -54,30 +56,58 @@ const productsRoutes = (req, res) => {
   });
 
   // Ruta para modificar producto
-router.put("/update/:id", filterAllowed(["name", "description", "price", "image"]), async (req, res) => {
-    try {
+  router.put(
+    "/update/:id",
+    filterAllowed(["name", "description", "price", "image"]),
+    async (req, res) => {
+      try {
         const id = req.params.id;
         if (mongoose.Types.ObjectId.isValid(id)) {
-            const updatedProduct = await productModel.findOneAndUpdate(
-                { _id: id },
-                { $set: req.body },
-                { new: true }
-            );
+          const updatedProduct = await productModel.findOneAndUpdate(
+            { _id: id },
+            { $set: req.body },
+            { new: true }
+          );
 
-            if (!updatedProduct) {
-                res.status(404).send({ status: "ERR", data: "No existe producto con ese ID" });
-            } else {
-                res.status(200).send({ status: "OK", data: updatedProduct });
-            }
+          if (!updatedProduct) {
+            res
+              .status(404)
+              .send({ status: "ERR", data: "No existe producto con ese ID" });
+          } else {
+            res.status(200).send({ status: "OK", data: updatedProduct });
+          }
         } else {
-            res.status(400).send({ status: "ERR", data: "Formato de ID no válido" });
+          res
+            .status(400)
+            .send({ status: "ERR", data: "Formato de ID no válido" });
         }
-    } catch (err) {
+      } catch (err) {
         console.error("Error al actualizar el producto:", err);
         res.status(500).send({ status: "ERR", data: err.message });
+      }
     }
-});
+  );
 
+  // Ruta para crear un nuevo producto
+router.post("/create", checkRequired(["name", "description", "price", "image"]), validateProductCreateFields, async (req, res) => {
+    try {
+      // Calcula el próximo ID en función del último producto
+      const lastProduct = await productModel.findOne({}, {}, { sort: { id: -1 } });  
+      const nextId = lastProduct ? lastProduct.id + 1 : 1;
+  
+      const newProductData = {
+        id: nextId,
+        ...req.body,
+      };
+  
+      const newProduct = await productModel.create(newProductData);
+  
+      res.status(201).json({ status: "OK", data: newProduct });
+    } catch (error) {
+      console.error("Error al crear el producto:", error);
+      res.status(500).json({ status: "ERR", data: error.message });
+    }
+  });
 
   return router;
 };

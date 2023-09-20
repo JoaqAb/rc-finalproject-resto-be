@@ -15,21 +15,16 @@ export const generateToken = (userId) => {
 
 export const checkRequired = (requiredFields) => {
   return (req, res, next) => {
-    for (const required of requiredFields) {
-      if (
-        !req.body.hasOwnProperty(required) ||
-        req.body[required].trim() === ""
-      ) {
-        return res
-          .status(400)
-          .send({
-            status: "ERR",
-            data: `Faltan campos obligatorios (${requiredFields.join(",")})`,
-          });
+    try {
+      for (const field of requiredFields) {
+        if (!req.body[field]) {
+          throw new Error(`El campo "${field}" es requerido`);
+        }
       }
+      next();
+    } catch (error) {
+      res.status(400).json({ status: 'ERR', data: error.message });
     }
-
-    next();
   };
 };
 
