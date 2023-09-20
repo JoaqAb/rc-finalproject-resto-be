@@ -33,6 +33,11 @@ app.use('/api/products', productsRoutes());
 // app.use('/api/admin', adminRoutes());
 // app.use('/api/stats', statsRoutes());
 
+
+app.get('/', (req, res) => {
+    res.send('¡Bienvenido a mi aplicación RESTful!');
+});
+
 // Manejo de errores
 app.all('*', (req, res) => {
     res.status(404).send({ status: 'ERR', data: 'No se encuentra el endpoint solicitado' })
