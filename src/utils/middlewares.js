@@ -1,8 +1,9 @@
 import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 import userModel from "../models/users.model.js";
+import productModel from "../models/product.model.js";
 
-// Middleware para verificar el token
+// Verificar el token
 export const verifyToken = (req, res, next) => {
   try {
     const headerToken = req.headers.authorization;
@@ -139,3 +140,19 @@ export const filterAllowed = (allowedFields) => {
       next()
   }
 }
+
+// Obtener los platos disponibles
+export const getAvailableProducts = async (req, res) => {
+  try {
+    const availableProducts = await productModel.find({ available: true });
+
+    console.log('Available Products:', availableProducts);
+
+    // Envía los platos disponibles como respuesta
+    res.status(200).json({ status: 'OK', data: availableProducts });
+  } catch (error) {
+    // Maneja los errores si ocurren
+    res.status(500).json({ status: 'ERR', error: error.message });
+  }
+};
+
