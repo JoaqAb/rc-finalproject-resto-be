@@ -12,7 +12,7 @@ import { checkRequired } from "../utils/utils.js";
 const productsRoutes = (req, res) => {
   const router = Router();
 
-  //   router.use(verifyToken, checkAdmin);
+  router.use(verifyToken, checkAdmin);
 
   // Ruta para listar productos
   router.get("/", async (req, res) => {
