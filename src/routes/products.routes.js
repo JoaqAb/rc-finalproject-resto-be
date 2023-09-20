@@ -89,23 +89,70 @@ const productsRoutes = (req, res) => {
   );
 
   // Ruta para crear un nuevo producto
-router.post("/create", checkRequired(["name", "description", "price", "image"]), validateProductCreateFields, async (req, res) => {
+  router.post(
+    "/create",
+    checkRequired(["name", "description", "price", "image"]),
+    validateProductCreateFields,
+    async (req, res) => {
+      try {
+        // Calcula el próximo ID en función del último producto
+        const lastProduct = await productModel.findOne(
+          {},
+          {},
+          { sort: { id: -1 } }
+        );
+        const nextId = lastProduct ? lastProduct.id + 1 : 1;
+
+        const newProductData = {
+          id: nextId,
+          ...req.body,
+        };
+
+        const newProduct = await productModel.create(newProductData);
+
+        res.status(201).json({ status: "OK", data: newProduct });
+      } catch (error) {
+        console.error("Error al crear el producto:", error);
+        res.status(500).json({ status: "ERR", data: error.message });
+      }
+    }
+  );
+
+  // Ruta para eliminar un producto por ID
+  router.delete("/delete/:id", async (req, res) => {
     try {
-      // Calcula el próximo ID en función del último producto
-      const lastProduct = await productModel.findOne({}, {}, { sort: { id: -1 } });  
-      const nextId = lastProduct ? lastProduct.id + 1 : 1;
-  
-      const newProductData = {
-        id: nextId,
-        ...req.body,
-      };
-  
-      const newProduct = await productModel.create(newProductData);
-  
-      res.status(201).json({ status: "OK", data: newProduct });
+      const productId = req.params.id;
+
+      // Verificar si el ID es válido
+      if (!mongoose.Types.ObjectId.isValid(productId)) {
+        return res.status(400).json({
+          status: "ERR",
+          data: "Formato de ID no válido",
+        });
+      }
+
+      // Buscar el producto por ID y eliminarlo
+      const deletedProduct = await productModel.findOneAndDelete({
+        _id: productId,
+      });
+
+      if (!deletedProduct) {
+        return res.status(404).json({
+          status: "ERR",
+          data: "No existe producto con ese ID",
+        });
+      }
+
+      res.status(200).json({
+        status: "OK",
+        data: deletedProduct,
+      });
     } catch (error) {
-      console.error("Error al crear el producto:", error);
-      res.status(500).json({ status: "ERR", data: error.message });
+      console.error("Error al eliminar el producto:", error);
+      res.status(500).json({
+        status: "ERR",
+        data: error.message,
+      });
     }
   });
 
