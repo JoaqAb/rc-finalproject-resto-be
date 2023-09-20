@@ -16,7 +16,7 @@ const app = express();
 
 // Configurar puerto y URL
 const EXPRESS_PORT = process.env.EXPRESS_PORT || 3000;
-const MONGODB_URL = process.env.MONGODB_URL || 'http://localhost:27017/';
+const MONGODB_URL = process.env.MONGODB_URI || 'http://localhost:27017/';
 
 // Habilitar cors y middleware
 app.use(express.json());
@@ -41,7 +41,7 @@ app.all('*', (req, res) => {
 // Iniciar Escucha al puerto del servidor y conectar a DB
 app.listen(EXPRESS_PORT, async () => {
     try {
-        await mongoose.connect(MONGODB_URL)
+        await mongoose.connect(MONGODB_URI)
         console.log(`Backend inicializado puerto ${EXPRESS_PORT}`)
     } catch (err) {
         console.error(err.message)
