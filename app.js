@@ -15,7 +15,7 @@ dotenv.config();
 const app = express();
 
 // Configurar puerto y URL
-const EXPRESS_PORT = process.env.PORT || 3587;
+const EXPRESS_PORT = process.env.EXPRESS_PORT || 3236;
 const MONGODB_URI = process.env.MONGODB_URI || 'http://localhost:27017/';
 
 // Habilitar cors y middleware
