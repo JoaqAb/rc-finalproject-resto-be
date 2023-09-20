@@ -1,8 +1,6 @@
-import mongoose from "mongoose";
 import { Router } from "express";
 import { validationResult } from "express-validator";
 import userModel from "../models/users.model.js";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {
   checkRequired,
@@ -23,60 +21,62 @@ import {
 const usersRoutes = (req, res) => {
   const router = Router();
 
-// Ruta de registro
-router.post(
-  "/register",
-  validateCreateFields,
-  checkRegistered,
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ status: "ERR", data: errors.array() });
-    }
-
-    try {
-      // Hashear la contraseña antes de guardarla
-      const hashedPassword = await hashPassword(req.body.password);
-
-      // Verifica si ya existe un administrador en la base de datos
-      const adminCount = await userModel.countDocuments({ rol: "admin" });
-
-      // Si no existe ningún administrador, permite el registro como administrador
-      if (adminCount === 0) {
-        // Crear nuevo usuario en DB con el rol de administrador
-        const newUser = await userModel.create({
-          name: req.body.name,
-          email: req.body.email,
-          password: hashedPassword,
-          rol: "admin",
-        });
-
-        // Generar un token de autenticación
-        const token = generateToken({ userId: newUser._id });
-
-        // Enviar el token en la respuesta
-        res.status(201).json({ status: "OK", data: { token } });
-      } else {
-        // Si ya existe un administrador, permite el registro como usuario regular
-        const newUser = await userModel.create({
-          name: req.body.name,
-          email: req.body.email,
-          password: hashedPassword,
-          role: "client",
-        });
-
-        // Generar un token de autenticación
-        const token = generateToken({ userId: newUser._id });
-
-        // Enviar el token en la respuesta
-        res.status(201).json({ status: "OK", data: { token } });
+  // Ruta de registro
+  router.post(
+    "/register",
+    validateCreateFields,
+    checkRegistered,
+    async (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ status: "ERR", data: errors.array() });
       }
-    } catch (error) {
-      console.error("Error al registrar el usuario:", error);
-      res.status(500).json({ status: "ERR", data: "Error al registrar el usuario" });
+
+      try {
+        // Hashear la contraseña antes de guardarla
+        const hashedPassword = await hashPassword(req.body.password);
+
+        // Verifica si ya existe un administrador en la base de datos
+        const adminCount = await userModel.countDocuments({ rol: "admin" });
+
+        // Si no existe ningún administrador, permite el registro como administrador
+        if (adminCount === 0) {
+          // Crear nuevo usuario en DB con el rol de administrador
+          const newUser = await userModel.create({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword,
+            rol: "admin",
+          });
+
+          // Generar un token de autenticación
+          const token = generateToken({ userId: newUser._id });
+
+          // Enviar el token en la respuesta
+          res.status(201).json({ status: "OK", data: { token } });
+        } else {
+          // Si ya existe un administrador, permite el registro como usuario regular
+          const newUser = await userModel.create({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword,
+            rol: "client",
+          });
+
+          // Generar un token de autenticación
+          const token = generateToken({ userId: newUser._id });
+
+          // Enviar el token en la respuesta
+          res.status(201).json({ status: "OK", data: { token } });
+        }
+      } catch (error) {
+        console.error("Error al registrar el usuario:", error);
+        res
+          .status(500)
+          .json({ status: "ERR", data: "Error al registrar el usuario" });
+      }
     }
-  }
-);
+  );
 
   // Ruta de login
   router.post(
@@ -85,7 +85,7 @@ router.post(
     validateLoginFields,
     checkReadyLogin,
     async (req, res) => {
-      // Ante todo chequeamos el validationResult del express-validator
+      // Checkear validationResult del express-validator
       if (validationResult(req).isEmpty()) {
         try {
           const foundUser = res.locals.foundUser;
@@ -95,17 +95,17 @@ router.post(
             foundUser.email === req.body.email &&
             isValidPassword(foundUser, req.body.password)
           ) {
-            // Generamos un nuevo token tipo JWT y lo agregamos a foundUser para que sea enviado en la respuesta
             foundUser._doc.token = jwt.sign(
               {
                 _id: foundUser._id,
                 name: foundUser.name,
                 email: foundUser.email,
-                role: foundUser.role,
+                rol: foundUser.rol,
               },
               process.env.JWT_SECRET,
               { expiresIn: process.env.JWT_EXPIRATION }
             );
+            console.log(foundUser._doc.token)
             res.status(200).send({
               status: "OK",
               data: filterData(foundUser._doc, ["password"]),
