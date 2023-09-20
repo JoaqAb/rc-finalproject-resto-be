@@ -16,7 +16,7 @@ const app = express();
 
 // Configurar puerto y URL
 const EXPRESS_PORT = process.env.EXPRESS_PORT || 3000;
-const MONGODB_URL = process.env.MONGODB_URI || 'http://localhost:27017/';
+const MONGODB_URI = process.env.MONGODB_URI || 'http://localhost:27017/';
 
 // Habilitar cors y middleware
 app.use(express.json());
