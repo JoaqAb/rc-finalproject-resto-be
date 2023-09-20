@@ -88,7 +88,7 @@ export const checkReadyLogin = async (req, res, next) => {
   }
 };
 
-// Middleware para verificar si el usuario es administrador
+// Verifica si el usuario es administrador
 export const checkAdmin = (req, res, next) => {
   try {
     console.log("Valor de req.loggedInUser.rol:", req.loggedInUser.rol);
@@ -109,3 +109,16 @@ export const checkAdmin = (req, res, next) => {
     res.status(500).json({ status: "ERR", data: err.message });
   }
 };
+
+// Quita campos del req.body respetando un array de permitidos
+export const filterAllowed = (allowedFields) => {
+  return (req, res, next) => {
+      req.filteredBody = {};
+      
+      for (const key in req.body) {
+          if (allowedFields.includes(key)) req.filteredBody[key] = req.body[key]
+      }
+      
+      next()
+  }
+}
