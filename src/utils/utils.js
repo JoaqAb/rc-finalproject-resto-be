@@ -51,6 +51,8 @@ export const filterAllowed = (allowedFields) => {
   }
 }
 
+
+// Función para crear pedidos
 export const createOrder = async (orderData) => {
   try {
     if (typeof orderData !== 'object' || orderData === null) {
@@ -71,6 +73,17 @@ export const createOrder = async (orderData) => {
     await newOrder.save();
 
     return newOrder;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Función para obtener pedidos por estado
+export const getOrdersByStatus = async (status) => {
+  try {
+    const orders = await orderModel.find({ estado: status }).populate("cliente");
+    
+    return orders;
   } catch (error) {
     throw error;
   }
