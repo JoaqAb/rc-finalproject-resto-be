@@ -58,6 +58,22 @@ export const checkRegistered = async (req, res, next) => {
   }
 };
 
+// Comprobar si se proporcionan campos requeridos en la solicitud
+export const checkRequired = (requiredFields) => {
+  return (req, res, next) => {
+    try {
+      for (const field of requiredFields) {
+        if (!req.body[field]) {
+          throw new Error(`El campo "${field}" es requerido`);
+        }
+      }
+      next();
+    } catch (error) {
+      res.status(400).json({ status: "ERR", data: error.message });
+    }
+  };
+};
+
 // Valida los elementos del body utilizando express-validator
 export const validateCreateFields = [
   body("name")
@@ -80,10 +96,10 @@ export const validateProductCreateFields = [
   body("price")
     .isNumeric()
     .withMessage("El precio debe ser un valor numérico válido"),
-  body("available").isBoolean().withMessage("El campo 'available' debe ser booleano"),
-  body("image")
-    .isURL()
-    .withMessage("El campo 'image' debe ser una URL válida"),
+  body("available")
+    .isBoolean()
+    .withMessage("El campo 'available' debe ser booleano"),
+  body("image").isURL().withMessage("El campo 'image' debe ser una URL válida"),
 ];
 
 // Valida los elementos del body utilizando express-validator
@@ -112,16 +128,12 @@ export const checkAdmin = (req, res, next) => {
     console.log("Valor de req.loggedInUser.rol:", req.loggedInUser.rol);
 
     if (req.loggedInUser && req.loggedInUser.rol === "admin") {
-      // Si es administrador, permitir el acceso
       next();
     } else {
-      // Si no es administrador, denegar el acceso
-      res
-        .status(403)
-        .json({
-          status: "ERR",
-          data: "Acceso denegado: no eres administrador",
-        });
+      res.status(403).json({
+        status: "ERR",
+        data: "Acceso denegado: no eres administrador",
+      });
     }
   } catch (err) {
     res.status(500).json({ status: "ERR", data: err.message });
@@ -131,28 +143,25 @@ export const checkAdmin = (req, res, next) => {
 // Quita campos del req.body respetando un array de permitidos
 export const filterAllowed = (allowedFields) => {
   return (req, res, next) => {
-      req.filteredBody = {};
-      
-      for (const key in req.body) {
-          if (allowedFields.includes(key)) req.filteredBody[key] = req.body[key]
-      }
-      
-      next()
-  }
-}
+    req.filteredBody = {};
+
+    for (const key in req.body) {
+      if (allowedFields.includes(key)) req.filteredBody[key] = req.body[key];
+    }
+
+    next();
+  };
+};
 
 // Obtener los platos disponibles
 export const getAvailableProducts = async (req, res) => {
   try {
     const availableProducts = await productModel.find({ available: true });
 
-    console.log('Available Products:', availableProducts);
+    console.log("Available Products:", availableProducts);
 
-    // Envía los platos disponibles como respuesta
-    res.status(200).json({ status: 'OK', data: availableProducts });
+    res.status(200).json({ status: "OK", data: availableProducts });
   } catch (error) {
-    // Maneja los errores si ocurren
-    res.status(500).json({ status: 'ERR', error: error.message });
+    res.status(500).json({ status: "ERR", error: error.message });
   }
 };
-

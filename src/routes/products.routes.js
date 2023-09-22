@@ -2,19 +2,19 @@ import { Router } from "express";
 import productModel from "../models/product.model.js";
 import {
   checkAdmin,
+  checkRequired,
   filterAllowed,
   getAvailableProducts,
   validateProductCreateFields,
   verifyToken,
 } from "../utils/middlewares.js";
 import mongoose from "mongoose";
-import { checkRequired } from "../utils/utils.js";
 
 const productsRoutes = (req, res) => {
   const router = Router();
 
   router.use(verifyToken);
-  
+
   router.get("/menu", getAvailableProducts, async (req, res) => {
     try {
       const products = await productModel.find();
@@ -26,7 +26,7 @@ const productsRoutes = (req, res) => {
       });
     }
   });
-  
+
   router.use(checkAdmin);
 
   // Ruta para listar productos
@@ -47,7 +47,6 @@ const productsRoutes = (req, res) => {
     try {
       const productId = req.params.id;
 
-      // Buscar el producto en la base de datos por su ID
       const product = await productModel.findOne({ id: productId });
 
       if (!product) {
@@ -110,7 +109,6 @@ const productsRoutes = (req, res) => {
     validateProductCreateFields,
     async (req, res) => {
       try {
-        // Calcula el próximo ID en función del último producto
         const lastProduct = await productModel.findOne(
           {},
           {},
@@ -138,7 +136,6 @@ const productsRoutes = (req, res) => {
     try {
       const productId = req.params.id;
 
-      // Verificar si el ID es válido
       if (!mongoose.Types.ObjectId.isValid(productId)) {
         return res.status(400).json({
           status: "ERR",
@@ -146,7 +143,6 @@ const productsRoutes = (req, res) => {
         });
       }
 
-      // Buscar el producto por ID y eliminarlo
       const deletedProduct = await productModel.findOneAndDelete({
         _id: productId,
       });

@@ -3,7 +3,6 @@ import { validationResult } from "express-validator";
 import userModel from "../models/users.model.js";
 import jwt from "jsonwebtoken";
 import {
-  checkRequired,
   filterAllowed,
   filterData,
   generateToken,
@@ -13,6 +12,7 @@ import {
 import {
   checkReadyLogin,
   checkRegistered,
+  checkRequired,
   validateCreateFields,
   validateLoginFields,
   verifyToken,
@@ -33,15 +33,11 @@ const usersRoutes = (req, res) => {
       }
 
       try {
-        // Hashear la contraseña antes de guardarla
         const hashedPassword = await hashPassword(req.body.password);
 
-        // Verifica si ya existe un administrador en la base de datos
         const adminCount = await userModel.countDocuments({ rol: "admin" });
 
-        // Si no existe ningún administrador, permite el registro como administrador
         if (adminCount === 0) {
-          // Crear nuevo usuario en DB con el rol de administrador
           const newUser = await userModel.create({
             name: req.body.name,
             email: req.body.email,
@@ -49,13 +45,10 @@ const usersRoutes = (req, res) => {
             rol: "admin",
           });
 
-          // Generar un token de autenticación
           const token = generateToken({ userId: newUser._id });
 
-          // Enviar el token en la respuesta
           res.status(201).json({ status: "OK", data: { token } });
         } else {
-          // Si ya existe un administrador, permite el registro como usuario regular
           const newUser = await userModel.create({
             name: req.body.name,
             email: req.body.email,
@@ -63,10 +56,8 @@ const usersRoutes = (req, res) => {
             rol: "client",
           });
 
-          // Generar un token de autenticación
           const token = generateToken({ userId: newUser._id });
 
-          // Enviar el token en la respuesta
           res.status(201).json({ status: "OK", data: { token } });
         }
       } catch (error) {
@@ -85,12 +76,10 @@ const usersRoutes = (req, res) => {
     validateLoginFields,
     checkReadyLogin,
     async (req, res) => {
-      // Checkear validationResult del express-validator
       if (validationResult(req).isEmpty()) {
         try {
           const foundUser = res.locals.foundUser;
 
-          // Si la clave es válida, la autenticación es correcta
           if (
             foundUser.email === req.body.email &&
             isValidPassword(foundUser, req.body.password)
@@ -105,7 +94,6 @@ const usersRoutes = (req, res) => {
               process.env.JWT_SECRET,
               { expiresIn: process.env.JWT_EXPIRATION }
             );
-            console.log(foundUser._doc.token)
             res.status(200).send({
               status: "OK",
               data: filterData(foundUser._doc, ["password"]),
@@ -129,14 +117,12 @@ const usersRoutes = (req, res) => {
   // Ruta profile para ver datos del cliente
   router.get("/profile", verifyToken, async (req, res) => {
     try {
-      // Verificar si req.loggedInUser contiene el ID del usuario
       if (!req.loggedInUser._id) {
         return res
           .status(401)
           .json({ status: "ERR", data: "Token de usuario no válido" });
       }
 
-      // Utilizar el ID del usuario para buscar en la base de datos
       const user = await userModel.findById(req.loggedInUser._id);
 
       if (!user) {
