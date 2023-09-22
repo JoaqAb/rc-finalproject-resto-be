@@ -7,19 +7,22 @@ import { createOrder } from "../utils/utils.js";
 const ordersRoutes = (req, res) => {
   const router = Router();
 
-//   router.use(verifyToken);
-
-  router.post("/create", async (req, res) => {
+  router.post("/create", verifyToken, async (req, res) => {
     try {
+      const clientId = req.loggedInUser._id;
       const orderData = req.body;
-
-      const newOrder = await createOrder(orderData);
-
+  
+      orderData.cliente = clientId;
+  
+      const newOrder = await createOrder(orderData); // Crear la orden con el ID del cliente
+  
       res.status(201).json({ status: "OK", data: newOrder });
     } catch (error) {
       res.status(500).json({ status: "ERR", error: error.message });
     }
   });
+  
+  
   return router;
 };
 

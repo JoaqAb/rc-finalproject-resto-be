@@ -105,7 +105,6 @@ const usersRoutes = (req, res) => {
               process.env.JWT_SECRET,
               { expiresIn: process.env.JWT_EXPIRATION }
             );
-            console.log(foundUser._doc.token)
             res.status(200).send({
               status: "OK",
               data: filterData(foundUser._doc, ["password"]),
