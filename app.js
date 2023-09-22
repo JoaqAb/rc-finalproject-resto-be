@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import usersRoutes from './src/routes/users.routes.js'
 import productsRoutes from './src/routes/products.routes.js';
 import ordersRoutes from './src/routes/orders.routes.js';
+import statsRoutes from './src/routes/stats.routes.js';
 
 
 // Cargar variables de entorno
@@ -31,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/users', usersRoutes());
 app.use('/api/products', productsRoutes());
 app.use('/api/orders', ordersRoutes());
-// app.use('/api/stats', statsRoutes());
+app.use('/api/stats', statsRoutes());
 
 
 app.get('/', (req, res) => {

@@ -1,7 +1,11 @@
 // Importa los módulos y modelos necesarios
 import { Router } from "express";
 import { checkAdmin, verifyToken } from "../utils/middlewares.js";
-import { createOrder, getOrdersByStatus, updateOrderStatus } from "../utils/utils.js";
+import {
+  createOrder,
+  getOrdersByStatus,
+  updateOrderStatus,
+} from "../utils/utils.js";
 
 const ordersRoutes = (req, res) => {
   const router = Router();
@@ -14,7 +18,7 @@ const ordersRoutes = (req, res) => {
 
       orderData.cliente = clientId;
 
-      const newOrder = await createOrder(orderData); // Crear la orden con el ID del cliente
+      const newOrder = await createOrder(orderData);
 
       res.status(201).json({ status: "OK", data: newOrder });
     } catch (error) {
@@ -24,32 +28,25 @@ const ordersRoutes = (req, res) => {
 
   // Visualizar pedidos en espera
   // /api/orders/en%20espera
-  router.get(
-    "/:status",
-    verifyToken,
-    checkAdmin,
-    async (req, res) => {
-      try {
-        const status = req.params.status;
+  router.get("/:status", verifyToken, checkAdmin, async (req, res) => {
+    try {
+      const status = req.params.status;
 
-        const orders = await getOrdersByStatus(status);
+      const orders = await getOrdersByStatus(status);
 
-        res.status(200).json({ status: "OK", data: orders });
-      } catch (error) {
-        res.status(500).json({ status: "ERR", error: error.message });
-      }
+      res.status(200).json({ status: "OK", data: orders });
+    } catch (error) {
+      res.status(500).json({ status: "ERR", error: error.message });
     }
-  );
+  });
 
   // Ruta para actualizar el estado de un pedido por su ID
   router.put("/status/:id", verifyToken, checkAdmin, async (req, res) => {
     try {
       const orderId = req.params.id;
-      const newStatus = req.body.estado; // Supongo que enviarás el nuevo estado en el cuerpo de la solicitud
-
-      // Llama a la función del controlador para actualizar el estado del pedido
+      const newStatus = req.body.estado;
       const updatedOrder = await updateOrderStatus(orderId, newStatus);
-  
+
       res.status(200).json({ status: "OK", data: updatedOrder });
     } catch (error) {
       res.status(500).json({ status: "ERR", error: error.message });
@@ -59,5 +56,4 @@ const ordersRoutes = (req, res) => {
   return router;
 };
 
-// Exporta el router para su uso en otros archivos
 export default ordersRoutes;

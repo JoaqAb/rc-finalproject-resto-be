@@ -1,12 +1,15 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import orderModel from "../models/order.model.js";
+import userModel from "../models/users.model.js";
 
+// Función para crear un hash de una contraseña
 export const hashPassword = async (password) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   return hashedPassword;
 };
 
+// Función para generar un token JWT
 export const generateToken = (userId) => {
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRATION,
@@ -14,31 +17,19 @@ export const generateToken = (userId) => {
   return token;
 };
 
-export const checkRequired = (requiredFields) => {
-  return (req, res, next) => {
-    try {
-      for (const field of requiredFields) {
-        if (!req.body[field]) {
-          throw new Error(`El campo "${field}" es requerido`);
-        }
-      }
-      next();
-    } catch (error) {
-      res.status(400).json({ status: "ERR", data: error.message });
-    }
-  };
-};
-
+// Función para verificar si una contraseña es válida
 export const isValidPassword = (userInDb, pass) => {
   return bcrypt.compareSync(pass, userInDb.password);
 };
 
+// Función para filtrar datos y eliminar campos no deseados
 export const filterData = (data, unwantedFields) => {
   const { ...filteredData } = data;
   unwantedFields.forEach((field) => delete filteredData[field]);
   return filteredData;
 };
 
+// Filtrar campos permitidos en la solicitud
 export const filterAllowed = (allowedFields) => {
   return (req, res, next) => {
     req.filteredBody = {};
@@ -58,7 +49,6 @@ export const createOrder = async (orderData) => {
       throw new Error("orderData is not a valid object");
     }
 
-    // Calcular el total de la orden si es necesario
     let total = 0;
     if (orderData.productos && Array.isArray(orderData.productos)) {
       orderData.productos.forEach((producto) => {
@@ -93,7 +83,6 @@ export const getOrdersByStatus = async (status) => {
 // Función para actualizar el estado del pedido por su ID
 export const updateOrderStatus = async (orderId, newStatus) => {
   try {
-    // Realiza una consulta a la base de datos para encontrar y actualizar el pedido
     const updatedOrder = await orderModel.findByIdAndUpdate(
       orderId,
       { estado: newStatus },
@@ -101,6 +90,90 @@ export const updateOrderStatus = async (orderId, newStatus) => {
     );
 
     return updatedOrder;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Función para obtener estadísticas de pedidos
+export const getOrdersStats = async () => {
+  try {
+    const totalOrders = await orderModel.countDocuments();
+    const totalSales = await orderModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalAmount: { $sum: "$total" },
+        },
+      },
+    ]);
+
+    const topProducts = await orderModel.aggregate([
+      {
+        $unwind: "$productos",
+      },
+      {
+        $group: {
+          _id: "$productos.nombre",
+          totalQuantity: { $sum: "$productos.cantidad" },
+        },
+      },
+      {
+        $sort: { totalQuantity: -1 },
+      },
+      {
+        $limit: 10,
+      },
+    ]);
+
+    const topProductsModified = topProducts.map((product) => ({
+      name: product._id,
+      totalQuantity: product.totalQuantity,
+    }));
+
+    // Obtener clientes con mayor cantidad de pedidos
+    const topClients = await orderModel.aggregate([
+      {
+        $group: {
+          _id: "$cliente",
+          totalOrders: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { totalOrders: -1 },
+      },
+      {
+        $limit: 10,
+      },
+    ]);
+
+    // Obtener los nombres de los clientes correspondientes a los IDs de topClients
+    const clientIds = topClients.map((client) => client._id);
+    const clientNames = await userModel.find(
+      { _id: { $in: clientIds } },
+      { _id: 1, name: 1 }
+    );
+
+    // Mapear los nombres de los clientes a la lista topClients
+    const topClientsWithNames = topClients.map((client) => {
+      const matchingClient = clientNames.find(
+        (c) => c._id.toString() === client._id.toString()
+      );
+      return {
+        _id: matchingClient._id,
+        name: matchingClient.name,
+        totalOrders: client.totalOrders,
+      };
+    });
+
+    const statistics = {
+      totalOrders,
+      totalSales: totalSales[0].totalAmount || 0,
+      topProducts: topProductsModified,
+      topClients: topClientsWithNames,
+    };
+
+    return statistics;
   } catch (error) {
     throw error;
   }
