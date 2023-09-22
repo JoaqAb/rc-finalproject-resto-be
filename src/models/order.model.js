@@ -21,6 +21,10 @@ const orderSchema = new mongoose.Schema({
       enum: ['en espera', 'pedido realizado'],
       default: 'en espera',
     },
+    total: {
+      type: Number,
+      required: true,
+    },
     fecha: {
       type: Date,
       default: Date.now,

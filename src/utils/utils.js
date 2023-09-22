@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import orderModel from "../models/order.model.js";
 
 export const hashPassword = async (password) => {
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -49,3 +50,28 @@ export const filterAllowed = (allowedFields) => {
       next()
   }
 }
+
+export const createOrder = async (orderData) => {
+  try {
+    if (typeof orderData !== 'object' || orderData === null) {
+      throw new Error("orderData is not a valid object");
+    }
+
+    // Calcular el total de la orden si es necesario
+    let total = 0;
+    if (orderData.productos && Array.isArray(orderData.productos)) {
+      orderData.productos.forEach((producto) => {
+        total += producto.precio * producto.cantidad;
+      });
+      orderData.total = total;
+    }
+
+    const newOrder = new orderModel(orderData);
+
+    await newOrder.save();
+
+    return newOrder;
+  } catch (error) {
+    throw error;
+  }
+};

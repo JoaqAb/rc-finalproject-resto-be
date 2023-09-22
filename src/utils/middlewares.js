@@ -2,6 +2,7 @@ import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 import userModel from "../models/users.model.js";
 import productModel from "../models/product.model.js";
+import orderModel from "../models/order.model.js";
 
 // Verificar el token
 export const verifyToken = (req, res, next) => {
