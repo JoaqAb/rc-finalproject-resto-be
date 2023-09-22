@@ -24,38 +24,37 @@ export const checkRequired = (requiredFields) => {
       }
       next();
     } catch (error) {
-      res.status(400).json({ status: 'ERR', data: error.message });
+      res.status(400).json({ status: "ERR", data: error.message });
     }
   };
 };
 
 export const isValidPassword = (userInDb, pass) => {
   return bcrypt.compareSync(pass, userInDb.password);
-}
+};
 
 export const filterData = (data, unwantedFields) => {
-  const { ...filteredData } = data
-  unwantedFields.forEach(field => delete filteredData[field] )
-  return filteredData
-}
+  const { ...filteredData } = data;
+  unwantedFields.forEach((field) => delete filteredData[field]);
+  return filteredData;
+};
 
 export const filterAllowed = (allowedFields) => {
   return (req, res, next) => {
-      req.filteredBody = {};
-      
-      for (const key in req.body) {
-          if (allowedFields.includes(key)) req.filteredBody[key] = req.body[key]
-      }
-      
-      next()
-  }
-}
+    req.filteredBody = {};
 
+    for (const key in req.body) {
+      if (allowedFields.includes(key)) req.filteredBody[key] = req.body[key];
+    }
+
+    next();
+  };
+};
 
 // Función para crear pedidos
 export const createOrder = async (orderData) => {
   try {
-    if (typeof orderData !== 'object' || orderData === null) {
+    if (typeof orderData !== "object" || orderData === null) {
       throw new Error("orderData is not a valid object");
     }
 
@@ -81,9 +80,27 @@ export const createOrder = async (orderData) => {
 // Función para obtener pedidos por estado
 export const getOrdersByStatus = async (status) => {
   try {
-    const orders = await orderModel.find({ estado: status }).populate("cliente");
-    
+    const orders = await orderModel
+      .find({ estado: status })
+      .populate("cliente");
+
     return orders;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Función para actualizar el estado del pedido por su ID
+export const updateOrderStatus = async (orderId, newStatus) => {
+  try {
+    // Realiza una consulta a la base de datos para encontrar y actualizar el pedido
+    const updatedOrder = await orderModel.findByIdAndUpdate(
+      orderId,
+      { estado: newStatus },
+      { new: true }
+    );
+
+    return updatedOrder;
   } catch (error) {
     throw error;
   }
