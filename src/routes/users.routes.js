@@ -10,6 +10,7 @@ import {
   isValidPassword,
 } from "../utils/utils.js";
 import {
+  checkAdmin,
   checkReadyLogin,
   checkRegistered,
   checkRequired,
@@ -141,6 +142,22 @@ const usersRoutes = (req, res) => {
       res
         .status(500)
         .json({ status: "ERR", data: "Error al obtener datos del usuario" });
+    }
+  });
+
+  // Ruta para que el administrador vea una lista de clientes
+  router.get("/clients", verifyToken, checkAdmin, async (req, res) => {
+    try {
+
+      const clients = await userModel.find({ rol: "client" }, "-password");
+
+      res.status(200).json({ status: "OK", data: clients });
+    } catch (error) {
+      console.error("Error al obtener la lista de clientes:", error);
+
+      res
+        .status(500)
+        .json({ status: "ERR", data: "Error al obtener la lista de clientes" });
     }
   });
 
