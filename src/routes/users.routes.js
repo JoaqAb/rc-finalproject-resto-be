@@ -214,6 +214,31 @@ const usersRoutes = (req, res) => {
     }
   );
 
+  // Ruta para eliminar un cliente por su ID
+router.delete("/delete/:id", verifyToken, checkAdmin, async (req, res) => {
+  try {
+    const userIdToDelete = req.params.id;
+
+    const userToDelete = await userModel.findById(userIdToDelete);
+
+    if (!userToDelete) {
+      return res
+        .status(404)
+        .json({ status: "ERR", data: "Usuario no encontrado" });
+    }
+
+    await userModel.findByIdAndDelete(userIdToDelete);
+
+    res.status(200).json({ status: "OK", data: "Usuario eliminado con éxito" });
+  } catch (error) {
+    console.error("Error al eliminar el usuario:", error);
+    res
+      .status(500)
+      .json({ status: "ERR", data: "Error al eliminar el usuario" });
+  }
+});
+
+
   return router;
 };
 
