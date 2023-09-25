@@ -131,7 +131,6 @@ export const getOrdersStats = async () => {
       totalQuantity: product.totalQuantity,
     }));
 
-    // Obtener clientes con mayor cantidad de pedidos
     const topClients = await orderModel.aggregate([
       {
         $group: {
@@ -147,14 +146,12 @@ export const getOrdersStats = async () => {
       },
     ]);
 
-    // Obtener los nombres de los clientes correspondientes a los IDs de topClients
     const clientIds = topClients.map((client) => client._id);
     const clientNames = await userModel.find(
       { _id: { $in: clientIds } },
       { _id: 1, name: 1 }
     );
 
-    // Mapear los nombres de los clientes a la lista topClients
     const topClientsWithNames = topClients.map((client) => {
       const matchingClient = clientNames.find(
         (c) => c._id.toString() === client._id.toString()
