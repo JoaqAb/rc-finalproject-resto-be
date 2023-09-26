@@ -13,7 +13,7 @@ import mongoose from "mongoose";
 const productsRoutes = (req, res) => {
   const router = Router();
 
-  router.use(verifyToken);
+  // router.use(verifyToken);
 
   router.get("/menu", getAvailableProducts, async (req, res) => {
     try {
@@ -27,7 +27,7 @@ const productsRoutes = (req, res) => {
     }
   });
 
-  router.use(checkAdmin);
+  router.use(checkAdmin, verifyToken);
 
   // Ruta para listar productos
   router.get("/list", async (req, res) => {
