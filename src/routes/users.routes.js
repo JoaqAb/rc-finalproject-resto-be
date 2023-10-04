@@ -218,6 +218,14 @@ const usersRoutes = (req, res) => {
     try {
       const userIdToDelete = req.params.id;
 
+      // Verificar si el usuario a eliminar es el administrador
+      if (userIdToDelete === req.loggedInUser._id.toString()) {
+        return res.status(403).json({
+          status: "ERR",
+          data: "No puedes eliminar al administrador actual",
+        });
+      }
+
       const userToDelete = await userModel.findById(userIdToDelete);
 
       if (!userToDelete) {

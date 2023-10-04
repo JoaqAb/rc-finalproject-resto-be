@@ -27,7 +27,7 @@ const productsRoutes = (req, res) => {
     }
   });
 
-  // router.use(checkAdmin, verifyToken);
+  // router.use(verifyToken, checkAdmin);
 
   // Ruta para listar productos
   router.get("/list", async (req, res) => {
