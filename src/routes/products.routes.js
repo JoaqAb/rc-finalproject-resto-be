@@ -43,7 +43,7 @@ const productsRoutes = (req, res) => {
   });
 
   // Ruta para obtener producto único
-  router.get("/one/:id", async (req, res) => {
+  router.get("/getproduct/:id", async (req, res) => {
     try {
       const productId = req.params.id;
 
