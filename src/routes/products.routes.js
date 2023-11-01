@@ -109,6 +109,19 @@ const productsRoutes = (req, res) => {
     validateProductCreateFields,
     async (req, res) => {
       try {
+        const existingProduct = await productModel.findOne({
+          name: req.body.name,
+        });
+
+        if (existingProduct) {
+          return res
+            .status(400)
+            .json({
+              status: "ERR",
+              data: "El nombre del producto ya está en uso.",
+            });
+        }
+
         const lastProduct = await productModel.findOne(
           {},
           {},
