@@ -146,7 +146,22 @@ const usersRoutes = (req, res) => {
   });
 
   // Ruta para que el administrador vea una lista de clientes
-  router.get("/clients", verifyToken, checkAdmin, async (req, res) => {
+  // router.get("/clients", verifyToken, checkAdmin, async (req, res) => {
+  //   try {
+  //     const clients = await userModel.find({ rol: "client" }, "-password");
+
+  //     res.status(200).json({ status: "OK", data: clients });
+  //   } catch (error) {
+  //     console.error("Error al obtener la lista de clientes:", error);
+
+  //     res
+  //       .status(500)
+  //       .json({ status: "ERR", data: "Error al obtener la lista de clientes" });
+  //   }
+  // });
+
+  // Ruta para que el administrador vea una lista de clientes
+  router.get("/clients", async (req, res) => {
     try {
       const clients = await userModel.find({ rol: "client" }, "-password");
 
