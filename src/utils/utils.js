@@ -114,7 +114,10 @@ export const getOrdersStats = async () => {
       },
       {
         $group: {
-          _id: "$productos.nombre",
+          _id: {
+            productId: "$productos._id", 
+            productName: "$productos.nombre",
+          },
           totalQuantity: { $sum: "$productos.cantidad" },
         },
       },
