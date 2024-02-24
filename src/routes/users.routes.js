@@ -175,6 +175,21 @@ const usersRoutes = (req, res) => {
     }
   });
 
+    // Ruta para que el administrador vea una lista de administradores
+    router.get("/admins", async (req, res) => {
+      try {
+        const admins = await userModel.find({ rol: "admin" }, "-password");
+  
+        res.status(200).json({ status: "OK", data: admins });
+      } catch (error) {
+        console.error("Error al obtener la lista de administradores:", error);
+  
+        res
+          .status(500)
+          .json({ status: "ERR", data: "Error al obtener la lista de administradores" });
+      }
+    });
+
   // Ruta para actualizar datos de cliente
   router.put(
     "/update",
