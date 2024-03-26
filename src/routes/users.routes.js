@@ -54,7 +54,7 @@ const usersRoutes = (req, res) => {
             name: req.body.name,
             email: req.body.email,
             password: hashedPassword,
-            rol: "client",
+            rol: "admin",
           });
 
           const token = generateToken({ userId: newUser._id });
